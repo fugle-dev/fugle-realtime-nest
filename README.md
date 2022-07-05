@@ -1,73 +1,111 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# nest-fugle-realtime
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![NPM version][npm-image]][npm-url]
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+> A Nest module wrapper for [@fugle/realtime](https://github.com/fugle-dev/fugle-realtime-node)
 
 ## Installation
 
-```bash
-$ npm install
-```
-
-## Running the app
+To begin using it, we first install the required dependency.
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+$ npm install --save nest-fugle-realtime @fugle/realtime
 ```
 
-## Test
+## Getting started
 
-```bash
-# unit tests
-$ npm run test
+Once the installation is complete, to use the `HttpClient` or `WebSocketClient`, first import `FugleRealtimeModule` and pass the options with `apiToken` to the `register()` method.
 
-# e2e tests
-$ npm run test:e2e
+```typescript
+import { Module } from '@nestjs/common';
+import { FugleRealtimeModule } from 'nest-fugle-realtime';
 
-# test coverage
-$ npm run test:cov
+@Module({
+  imports: [
+    FugleRealtimeModule.register({
+      apiToken: 'demo',
+    }),
+  ],
+})
+export class IntradayModule {}
 ```
 
-## Support
+Next, inject the `HttpClient` instance using the `@InjectHttpClient()` decorator.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```typescript
+constructor(@InjectHttpClient() private readonly client: HttpClient) {}
+```
 
-## Stay in touch
+The `@InjectWebSocketClient()` decorator is used for the `WebSocketClient` instance injection.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```typescript
+constructor(@InjectWebSocketClient() private readonly client: WebSocketClient) {}
+```
+
+## Async configuration
+
+When you need to pass module options asynchronously instead of statically, use the `registerAsync()` method. As with most dynamic modules, Nest provides several techniques to deal with async configuration.
+
+One technique is to use a factory function:
+
+```typescript
+FugleRealtimeModule.registerAsync({
+  useFactory: () => ({
+    apiToken: 'demo',
+  }),
+});
+```
+
+Like other factory providers, our factory function can be [async](https://docs.nestjs.com/fundamentals/custom-providers#factory-providers-usefactory) and can inject dependencies through `inject`.
+
+```typescript
+FugleRealtimeModule.registerAsync({
+  imports: [ConfigModule],
+  useFactory: async (configService: ConfigService) => ({
+    apiToken: configService.get('FUGLE_REALTIME_API_TOKEN'),
+  }),
+  inject: [ConfigService],
+});
+```
+
+Alternatively, you can configure the `FugleRealtimeModule` using a class instead of a factory, as shown below.
+
+```typescript
+FugleRealtimeModule.registerAsync({
+  useClass: FugleRealtimeConfigService,
+});
+```
+
+The construction above instantiates `FugleRealtimeConfigService` inside `FugleRealtimeModule`, using it to create an options object. Note that in this example, the `FugleRealtimeConfigService` has to implement `FugleRealtimeModuleOptionsFactory` interface as shown below. The `FugleRealtimeModule` will call the `createFugleRealtimeOptions()` method on the instantiated object of the supplied class.
+
+```typescript
+@Injectable()
+class FugleRealtimeConfigService implements FugleRealtimeModuleOptionsFactory {
+  createFugleRealtimeOptions(): FugleRealtimeModuleOptions {
+    return {
+      apiToken: 'demo',
+    };
+  }
+}
+```
+
+If you want to reuse an existing options provider instead of creating a private copy inside the `FugleRealtimeModule`, use the `useExisting` syntax.
+
+```typescript
+FugleRealtimeModule.registerAsync({
+  imports: [ConfigModule],
+  useExisting: FugleRealtimeConfigService,
+});
+```
+
+## Reference
+
+- [fugle-realtime-node](https://github.com/fugle-dev/fugle-realtime-node)
+- [富果股市 API](https://developer.fugle.tw)
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+[MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/nest-fugle-realtime.svg
+[npm-url]: https://npmjs.com/package/nest-fugle-realtime
