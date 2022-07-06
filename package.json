@@ -1,5 +1,5 @@
 {
-  "name": "nest-fugle-realtime",
+  "name": "@fugle/realtime-nest",
   "version": "0.3.0",
   "description": "A Nest module wrapper for @fugle/realtime",
   "keywords": [
