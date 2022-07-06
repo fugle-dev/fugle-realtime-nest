@@ -527,10 +527,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@fugle/realtime@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@fugle/realtime/-/realtime-0.3.3.tgz#58fc6082f968d76a2a2cd15278ee47128a0117b6"
-  integrity sha512-xxUGSt57EeDHhz9MfKf84OiRAAcDrtoIAZzXVVghdrfdNLsJ6/67QZAsNDjTiAkTaXPL5Xvqm4sA8oyu2vLfJg==
+"@fugle/realtime@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@fugle/realtime/-/realtime-0.3.4.tgz#3d3c7ba82fffded3f36ca22de9a883dd973d7a0e"
+  integrity sha512-UgNA4bMX7LYU85zdGWfmPaZL6eMY327EX3iRijrrRNr9YqZfpzqyuku8iC1sEC/21plozt0Qm7i2LSef8uURsA==
   dependencies:
     isomorphic-fetch "^3.0.0"
     isomorphic-ws "^4.0.1"
