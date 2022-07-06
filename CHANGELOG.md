@@ -7,4 +7,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* fugle realtime module ([b3b8e6a](https://github.com/fugle-dev/nest-fugle-realtime/commit/b3b8e6a6cfa5e03df0bd28cf1802211d6d4f1c7d))
+* fugle realtime module ([b3b8e6a](https://github.com/fugle-dev/fugle-realtime-nest/commit/b3b8e6a6cfa5e03df0bd28cf1802211d6d4f1c7d))

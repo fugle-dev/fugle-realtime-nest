@@ -88,10 +88,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fugle-dev/nest-fugle-realtime.git"
+    "url": "git+https://github.com/fugle-dev/fugle-realtime-nest.git"
   },
   "bugs": {
-    "url": "https://github.com/fugle-dev/nest-fugle-realtime/issues"
+    "url": "https://github.com/fugle-dev/fugle-realtime-nest/issues"
   },
-  "homepage": "https://github.com/fugle-dev/nest-fugle-realtime#readme"
+  "homepage": "https://github.com/fugle-dev/fugle-realtime-nest#readme"
 }
