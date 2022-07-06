@@ -1,8 +1,7 @@
 import { ModuleMetadata, Type } from '@nestjs/common';
+import { ClientOptions } from '@fugle/realtime';
 
-export interface FugleRealtimeModuleOptions {
-  apiToken: string;
-}
+export interface FugleRealtimeModuleOptions extends ClientOptions {}
 
 export interface FugleRealtimeModuleOptionsFactory {
   createFugleRealtimeOptions(): Promise<FugleRealtimeModuleOptions> | FugleRealtimeModuleOptions;
