@@ -1,4 +1,4 @@
-# nest-fugle-realtime
+# @fugle/realtime-nest
 
 [![NPM version][npm-image]][npm-url]
 
@@ -9,7 +9,7 @@
 To begin using it, we first install the required dependency.
 
 ```bash
-$ npm install --save nest-fugle-realtime @fugle/realtime
+$ npm install --save @fugle/realtime-nest @fugle/realtime
 ```
 
 ## Getting started
@@ -18,7 +18,7 @@ Once the installation is complete, to use the `HttpClient` or `WebSocketClient`,
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { FugleRealtimeModule } from 'nest-fugle-realtime';
+import { FugleRealtimeModule } from '@fugle/realtime-nest';
 
 @Module({
   imports: [
@@ -107,5 +107,5 @@ FugleRealtimeModule.registerAsync({
 
 [MIT](LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/nest-fugle-realtime.svg
-[npm-url]: https://npmjs.com/package/nest-fugle-realtime
+[npm-image]: https://img.shields.io/npm/v/@fugle/realtime-nest.svg
+[npm-url]: https://npmjs.com/package/@fugle/realtime-nest
