@@ -6,7 +6,7 @@
 
 ## Installation
 
-To begin using it, we first install the required dependency.
+To begin using it, we first install the required dependencies.
 
 ```bash
 $ npm install --save @fugle/realtime-nest @fugle/realtime
